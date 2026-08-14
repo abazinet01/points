@@ -3,9 +3,15 @@
 /* ============================================================================
  * Points — liste à points (Final Version de Mark Forster), version iPhone.
  *
- * Adapté de https://github.com/bsoule/dotlist. L'algorithme est identique ;
- * ce qui change, c'est l'enveloppe : ergonomie au pouce, plein écran hors
- * ligne, historique et sauvegarde.
+ * ŒUVRE DÉRIVÉE de https://github.com/bsoule/dotlist.
+ *   En viennent : l'algorithme et son découpage en fonctions (voir § 2), la
+ *   machine à états à quatre modes, la forme des données.
+ *   Écrits ici : l'interface, l'historique, la sauvegarde, les thèmes,
+ *   l'installation iOS, et le suivi du curseur de revue par identifiant.
+ *   La méthode elle-même est de Mark Forster.
+ *
+ * Code écrit par Claude Code (Opus 5, Anthropic).
+ * dotlist est publié sans licence — voir NOTICE.md avant toute réutilisation.
  *
  * Plan du fichier :
  *   1. État + persistance

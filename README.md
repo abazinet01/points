@@ -1,10 +1,17 @@
 # Points — liste à points
 
 Une app de poche pour gérer ses tâches avec le système *Final Version* de
-Mark Forster. Adaptée de [bsoule/dotlist](https://github.com/bsoule/dotlist) :
-l'algorithme est le même, l'enveloppe est refaite pour l'iPhone.
+Mark Forster. Œuvre dérivée de
+[bsoule/dotlist](https://github.com/bsoule/dotlist) : l'algorithme en vient
+directement, l'enveloppe a été refaite pour l'iPhone.
 
 Pas de compte, pas de serveur, pas de suivi. Les tâches restent sur l'appareil.
+
+> **Origine et crédits.** La méthode est de Mark Forster, l'algorithme vient de
+> dotlist, et tout le code de ce dépôt a été écrit par Claude Code (Opus 5).
+> Le détail de qui a fait quoi — et le statut de licence, qui demande à être
+> clarifié — est dans [NOTICE.md](NOTICE.md). À lire avant de réutiliser ce
+> code.
 
 ## La méthode en cinq lignes
 
@@ -128,7 +135,12 @@ l'ancienne version.
 - **Refaire les icônes** : n'importe quel PNG carré aux tailles indiquées dans
   le manifeste, plus `icons/icon-180.png` pour iOS.
 
----
+## Crédits
 
-D'après le système *Final Version* de Mark Forster —
-[explication détaillée](https://blog.beeminder.com/forster).
+| | |
+|---|---|
+| **Méthode** *Final Version* | Mark Forster — [présentation](https://blog.beeminder.com/forster) |
+| **Code d'origine** | [bsoule/dotlist](https://github.com/bsoule/dotlist) — algorithme, machine à états, forme des données |
+| **Direction du projet** | [@abazinet01](https://github.com/abazinet01) — objectifs, choix fonctionnels et esthétiques |
+| **Écriture du code** | Claude Code (Opus 5, Anthropic) — la totalité du code de ce dépôt |
+| **Licence** | Aucune déclarée — voir [NOTICE.md](NOTICE.md) |
