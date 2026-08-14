@@ -1,0 +1,542 @@
+/* ==========================================================================
+   Points — feuille de style
+   Pensée pour un iPhone tenu à une main : tout ce qui se touche souvent est
+   en bas, les cibles font au moins 44 px, rien ne dépend du survol.
+   ========================================================================== */
+
+/* ==========================================================================
+   THÈMES
+   Deux apparences, pilotées par data-theme sur <html> :
+     (défaut)            « papier » — encre électronique, monochrome
+     [data-theme=color]  la palette orange d'origine
+
+   Le papier n'est pas qu'une question de couleurs : il change aussi la
+   typographie (serif pour le contenu), les rayons (nets, imprimés), les
+   ombres (aucune) et les transitions (instantanées, comme un rafraîchissement
+   e-ink). D'où les jetons --font-read, --radius, --shadow, --anim.
+
+   Sans couleur, la mise en évidence passe par l'inversion : la tâche en cours
+   de comparaison devient un bloc d'encre pleine.
+   ========================================================================== */
+
+/* ---------- Papier, clair (défaut) ---------- */
+:root {
+  --bg:        #f4f3ef;   /* fond papier, très légèrement chaud */
+  --surface:   #faf9f6;
+  --surface-2: #e8e6de;
+  --text:      #1b1a17;   /* encre — pas un noir pur, comme sur une liseuse */
+  --muted:     #6f6d64;
+  --line:      #d6d3c9;
+  --accent:    #1b1a17;   /* l'accent, c'est l'encre elle-même */
+  --on-accent: #f4f3ef;
+  --anchor-bg: #e9e7dd;   /* trame légère pour le repère */
+  --cand-bg:   #1b1a17;   /* candidate : inversion pleine */
+  --cand-fg:   #f4f3ef;
+  --danger-bg: #1b1a17;   /* le destructif se signale par l'aplat, pas le rouge */
+  --danger-fg: #f4f3ef;
+  --danger:    #1b1a17;
+  --ok:        #1b1a17;
+
+  --font-read: ui-serif, "New York", Georgia, "Times New Roman", serif;
+  --radius:    3px;
+  --shadow:    none;
+  --anim:      0ms;
+  --link-line: underline;
+}
+
+/* ---------- Papier, sombre (le mode nuit des liseuses) ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #111110;
+    --surface:   #191918;
+    --surface-2: #26251f;
+    --text:      #e9e7df;
+    --muted:     #8f8d84;
+    --line:      #33322c;
+    --accent:    #e9e7df;
+    --on-accent: #111110;
+    --anchor-bg: #23221c;
+    --cand-bg:   #e9e7df;
+    --cand-fg:   #111110;
+    --danger-bg: #e9e7df;
+    --danger-fg: #111110;
+    --danger:    #e9e7df;
+    --ok:        #e9e7df;
+  }
+}
+
+/* ---------- Couleur, clair ---------- */
+:root[data-theme="color"] {
+  --bg:        #faf8f3;
+  --surface:   #ffffff;
+  --surface-2: #f2efe6;
+  --text:      #1d1d1f;
+  --muted:     #6e6b64;
+  --line:      #e6e1d4;
+  --accent:    #c65d12;
+  --on-accent: #ffffff;
+  --anchor-bg: #fff6e3;
+  --cand-bg:   #fbe4cd;
+  --cand-fg:   #1d1d1f;
+  --danger-bg: #f2efe6;
+  --danger-fg: #c0392b;
+  --danger:    #c0392b;
+  --ok:        #2c7a56;
+
+  --font-read: inherit;
+  --radius:    14px;
+  --shadow:    0 -1px 20px rgba(0,0,0,.06);
+  --anim:      180ms;
+  --link-line: none;
+}
+
+/* ---------- Couleur, sombre ---------- */
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="color"] {
+    --bg:        #121213;
+    --surface:   #1c1c1e;
+    --surface-2: #262629;
+    --text:      #f2f0ea;
+    --muted:     #9b968c;
+    --line:      #313134;
+    --accent:    #ff8a3d;
+    --on-accent: #121213;
+    --anchor-bg: #2a2415;
+    --cand-bg:   #3d2412;
+    --cand-fg:   #f2f0ea;
+    --danger-bg: #262629;
+    --danger-fg: #ff6b5e;
+    --danger:    #ff6b5e;
+    --ok:        #4cc38a;
+    --shadow:    0 -1px 20px rgba(0,0,0,.4);
+  }
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  /* --vvh est tenu à jour par app.js depuis visualViewport : sans ça, le clavier
+     iOS pousse la page hors de l'écran au lieu de comprimer la mise en page. */
+  height: var(--vvh, 100dvh);
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font: 17px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+/* ---------- Typographie de lecture ----------
+   Le contenu (tâches, questions, historique) prend la serif du thème —
+   sur iOS c'est New York. Les contrôles restent en sans-serif : c'est la
+   répartition classique des liseuses, et les petits libellés y gagnent. */
+.topbar h1,
+.topbar h2,
+.task-text,
+.panel .subject,
+.panel .versus .bench,
+.sheet h3,
+.hist-item .t,
+.stat b,
+.list-empty,
+.prose { font-family: var(--font-read); }
+
+/* ---------- Barre du haut ---------- */
+.topbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .5rem .9rem;
+  padding-top: calc(.5rem + env(safe-area-inset-top));
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+.topbar h1, .topbar h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  margin: 0;
+}
+.brand-dot { color: var(--accent); }
+.spacer { width: 3.5rem; }
+
+.icon-btn {
+  min-width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.icon-btn:active { background: var(--surface-2); }
+.icon-btn.small { min-width: 32px; height: 32px; font-size: 1.1rem; }
+
+.linklike {
+  background: none;
+  border: 0;
+  padding: .4rem .2rem;
+  color: var(--accent);
+  font-size: .95rem;
+  /* En monochrome, un lien ne peut pas se signaler par la couleur : il se
+     souligne. En thème couleur, l'orange suffit. */
+  text-decoration: var(--link-line);
+  text-underline-offset: 3px;
+}
+.linklike.back { font-size: 1rem; }
+
+/* ---------- Rappel de sauvegarde ---------- */
+.nag {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem .9rem;
+  background: var(--anchor-bg);
+  border-bottom: 1px solid var(--line);
+  font-size: .85rem;
+  color: var(--muted);
+}
+/* `display: flex` l'emporterait sur le style navigateur de [hidden] : on
+   remet la règle à la main. Même précaution partout où un conteneur flex
+   se cache via l'attribut hidden. */
+.nag[hidden] { display: none; }
+.nag span { flex: 1; }
+
+/* ---------- Liste ---------- */
+main {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+ul.tasks { list-style: none; margin: 0; padding: .25rem 0 .5rem; }
+
+ul.tasks li {
+  display: flex;
+  align-items: center;
+  gap: .1rem;
+  padding-left: .5rem;
+  border-bottom: 1px solid var(--line);
+  transition: background var(--anim) ease;
+}
+
+/* La ligne entière est tactile : on tape le texte pour ouvrir les actions. */
+.task-text {
+  flex: 1;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  padding: .6rem .3rem;
+  background: none;
+  border: 0;
+  text-align: left;
+  font-size: 1.02rem;
+  word-break: break-word;
+}
+.dot-marker {
+  width: 1.15em;
+  flex: 0 0 auto;
+  text-align: center;
+  color: var(--accent);
+  font-size: .8em;
+}
+.task-check {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  margin-right: .25rem;
+  border: 0;
+  border-radius: 24px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.15rem;
+}
+.task-check:active { background: var(--surface-2); color: var(--ok); }
+
+li.dotted .task-text { font-weight: 600; }
+li.anchor    { background: var(--anchor-bg); }
+li.candidate { background: var(--cand-bg); color: var(--cand-fg); }
+li.candidate .dot-marker,
+li.candidate .task-check { color: var(--cand-fg); }
+li.next-up   { box-shadow: inset 4px 0 0 var(--accent); }
+li.done .task-text { color: var(--muted); text-decoration: line-through; }
+
+.list-empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: .95rem;
+  padding: 3rem 2rem;
+  margin: 0;
+}
+
+/* ---------- Dock (zone du pouce) ---------- */
+.dock {
+  position: relative;      /* repère de positionnement pour le toast */
+  flex: 0 0 auto;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  padding: .75rem .9rem;
+  padding-bottom: calc(.75rem + env(safe-area-inset-bottom));
+}
+
+.panel { margin-bottom: .65rem; }
+.panel:empty { display: none; }
+
+.panel .label {
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin: 0 0 .3rem;
+}
+.panel .question {
+  margin: 0 0 .8rem;
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+.panel .subject {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: .15rem 0;
+}
+.panel .subject.candidate-text { color: var(--accent); }
+/* La ligne « plus que X ? » reste d'un bloc : sans ça, le point
+   d'interrogation se retrouve seul sur sa ligne. */
+.panel .versus { display: block; color: var(--muted); font-size: .95rem; margin-top: .15rem; }
+.panel .versus .bench { color: var(--text); font-weight: 600; }
+
+.row { display: flex; gap: .5rem; }
+.row > * { flex: 1; }
+
+.panel .hint-inline {
+  margin: .5rem .2rem 0;
+  font-size: .8rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Boutons — hauteur 54 px, confortable au pouce */
+.btn {
+  min-height: 54px;
+  padding: .6rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-size: 1.02rem;
+  font-weight: 500;
+}
+.btn:active { transform: scale(.985); filter: brightness(.95); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.ghost   { background: transparent; border-color: transparent; color: var(--muted);
+               min-height: 40px; font-size: .9rem; }
+.btn.danger  { color: var(--danger); }
+
+/* ---------- Champ d'ajout ---------- */
+.composer { display: flex; gap: .5rem; align-items: center; }
+.composer[hidden] { display: none; }
+.composer input {
+  flex: 1;
+  min-height: 48px;
+  padding: .55rem .85rem;
+  /* 16 px minimum : en dessous, iOS zoome automatiquement au focus. */
+  font-size: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.composer input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.add-btn {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+/* ---------- Toast (confirmation + annulation) ----------
+   Enfant du dock : il flotte juste au-dessus, quelle que soit la hauteur
+   du panneau en cours. */
+.toast {
+  position: absolute;
+  left: .9rem;
+  right: .9rem;
+  bottom: calc(100% + .5rem);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem .9rem;
+  border-radius: var(--radius);
+  background: var(--text);
+  color: var(--bg);
+  font-size: .92rem;
+  box-shadow: 0 6px 24px rgba(0,0,0,.25);
+  animation: toast-in .2s ease;
+}
+.toast span { flex: 1; }
+.toast .linklike { color: var(--bg); font-weight: 600; padding: .2rem;
+                   text-decoration: underline; }
+.toast[hidden] { display: none; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px) } }
+
+/* ---------- Feuilles modales ---------- */
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 20;
+  animation: fade .18s ease;
+}
+@keyframes fade { from { opacity: 0 } }
+
+.sheet {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 21;
+  background: var(--surface);
+  border-radius: calc(var(--radius) * 1.3) calc(var(--radius) * 1.3) 0 0;
+  padding: .5rem .9rem;
+  padding-bottom: calc(.9rem + env(safe-area-inset-bottom));
+  max-height: 85%;
+  overflow-y: auto;
+  animation: rise .22s cubic-bezier(.32,.72,0,1);
+}
+@keyframes rise { from { transform: translateY(100%) } }
+
+.sheet .grabber {
+  width: 36px; height: 5px;
+  border-radius: 3px;
+  background: var(--line);
+  margin: .25rem auto .6rem;
+}
+.sheet h3 {
+  margin: .2rem .25rem .7rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+  word-break: break-word;
+}
+.sheet .sheet-btn {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  padding: .7rem .9rem;
+  margin-bottom: .4rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  text-align: left;
+  font-size: 1.02rem;
+}
+.sheet .sheet-btn:active { filter: brightness(.94); }
+.sheet .sheet-btn.danger { background: var(--danger-bg); color: var(--danger-fg); }
+.sheet .sheet-btn.cancel { text-align: center; color: var(--muted); margin-top: .5rem; }
+.sheet .hint { font-size: .85rem; color: var(--muted); margin: .2rem .3rem .8rem; }
+.sheet input[type=text] {
+  width: 100%;
+  min-height: 48px;
+  padding: .55rem .85rem;
+  font-size: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  margin-bottom: .6rem;
+}
+
+/* ---------- Pages plein écran ---------- */
+.page {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  animation: slide .24s cubic-bezier(.32,.72,0,1);
+}
+@keyframes slide { from { transform: translateX(100%) } }
+.page[hidden] { display: none; }
+
+.page-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: .5rem .9rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+}
+
+/* ---------- Historique ---------- */
+.stats {
+  display: flex;
+  gap: .5rem;
+  margin: .6rem 0 1.2rem;
+}
+.stat {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: .7rem;
+  text-align: center;
+}
+.stat b { display: block; font-size: 1.6rem; font-weight: 600; line-height: 1.1; }
+.stat span { font-size: .75rem; color: var(--muted); }
+
+.day-head {
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin: 1.2rem 0 .4rem;
+}
+.hist-item {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+  padding: .55rem .2rem;
+  border-bottom: 1px solid var(--line);
+  font-size: .98rem;
+}
+.hist-item .t { flex: 1; word-break: break-word; }
+.hist-item .when { font-size: .78rem; color: var(--muted); flex: 0 0 auto; }
+/* Sans couleur pour la porter, la nuance passe par l'italique. */
+.hist-item.partial .t::after {
+  content: " · repoussée";
+  color: var(--muted);
+  font-style: italic;
+  font-size: .8rem;
+}
+
+/* ---------- Aide ---------- */
+.prose { font-size: 1rem; line-height: 1.6; }
+.prose ol { padding-left: 1.3rem; }
+.prose li { margin: .55rem 0; }
+.prose a { color: var(--accent); }
+.prose .credit { color: var(--muted); font-size: .88rem; margin-top: 1.5rem; }
+
+/* ---------- Confort ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition: none !important; }
+}

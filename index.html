@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <!-- viewport-fit=cover : indispensable pour que env(safe-area-inset-*) renvoie
+       autre chose que 0 sur les iPhone à encoche / Dynamic Island. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Points</title>
+  <meta name="description" content="Liste à points — la méthode Final Version de Mark Forster, sur iPhone.">
+
+  <!-- Écran d'accueil iOS : plein écran, sans barre Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Points">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+
+  <link rel="stylesheet" href="./app.css">
+</head>
+
+<body>
+
+<header class="topbar">
+  <h1><span class="brand-dot">●</span> Points</h1>
+  <button class="icon-btn" id="menu-btn" aria-label="Menu">⋯</button>
+</header>
+
+<!-- Rappel de sauvegarde : affiché seulement si l'export date trop -->
+<div class="nag" id="backup-nag" hidden>
+  <span id="backup-nag-text"></span>
+  <button class="linklike" id="backup-nag-go">Sauvegarder</button>
+  <button class="icon-btn small" id="backup-nag-dismiss" aria-label="Ignorer">×</button>
+</div>
+
+<main id="scroll">
+  <ul class="tasks" id="task-list"></ul>
+  <p class="list-empty" id="list-empty" hidden>
+    Rien pour l'instant.<br>Ajoute ce que tu as en tête, une ligne à la fois.
+  </p>
+</main>
+
+<!-- Zone du pouce : tout ce qui se touche souvent vit ici -->
+<div class="dock" id="dock">
+  <div class="panel" id="panel"></div>
+  <form class="composer" id="composer" autocomplete="off">
+    <input type="text" id="task-input" placeholder="Ajouter une tâche…"
+           enterkeyhint="done" autocapitalize="sentences" autocorrect="on">
+    <button type="submit" class="add-btn" id="add-btn" aria-label="Ajouter">+</button>
+  </form>
+</div>
+
+<!-- ============ Feuilles modales ============ -->
+<div class="scrim" id="scrim" hidden></div>
+
+<!-- Feuille générique (menu, actions sur une tâche, renommage, sauvegarde) -->
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true"></div>
+
+<!-- Panneaux plein écran -->
+<section class="page" id="page-history" hidden>
+  <header class="topbar">
+    <button class="linklike back" data-close-page>‹ Retour</button>
+    <h2>Historique</h2>
+    <button class="linklike" id="clear-history">Vider</button>
+  </header>
+  <div class="page-body" id="history-body"></div>
+</section>
+
+<section class="page" id="page-help" hidden>
+  <header class="topbar">
+    <button class="linklike back" data-close-page>‹ Retour</button>
+    <h2>Comment ça marche</h2>
+    <span class="spacer"></span>
+  </header>
+  <div class="page-body prose">
+    <p>Une seule règle : tu ne choisis jamais dans le vide, tu compares toujours à
+       quelque chose de concret.</p>
+    <ol>
+      <li>Les nouvelles tâches s'ajoutent <strong>en bas</strong> de la liste.</li>
+      <li>La première tâche active reçoit un point <span class="brand-dot">●</span> :
+          c'est ton <strong>repère</strong>.</li>
+      <li>La <strong>revue</strong> descend la liste et pose chaque fois la même question :
+          <em>est-ce que tu veux faire ça plus que le repère ?</em>
+          Si oui, la tâche reçoit un point et devient le nouveau repère.</li>
+      <li>À la fin, tu obtiens une <strong>chaîne</strong> de tâches pointées.
+          Tu la travailles <strong>de bas en haut</strong> — la dernière pointée d'abord.</li>
+      <li>Tu n'as pas à tout finir. <strong>Commencé, pas fini</strong> raye la tâche
+          et en remet une copie en bas de la liste, pour la prochaine fois.</li>
+      <li>Quand la chaîne est vide, la tâche suivante devient le nouveau repère.
+          Et ça recommence.</li>
+    </ol>
+    <p class="credit">D'après le système <em>Final Version</em> de Mark Forster.
+       Code d'origine : <a href="https://github.com/bsoule/dotlist" target="_blank" rel="noopener">bsoule/dotlist</a>.</p>
+  </div>
+</section>
+
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+
+<script src="./app.js"></script>
+</body>
+</html>
