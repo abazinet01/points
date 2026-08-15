@@ -55,6 +55,19 @@
   <button class="icon-btn small" id="backup-nag-dismiss" aria-label="Ignorer">×</button>
 </div>
 
+<!-- Sans JavaScript, l'app n'affiche rien du tout : mieux vaut le dire que
+     de laisser une page vide, qui ressemble à une panne. -->
+<noscript>
+  <div class="noscript">
+    <h2>JavaScript est désactivé</h2>
+    <p>Cette app fonctionne entièrement dans le navigateur, sans serveur :
+       sans JavaScript, elle ne peut rien afficher.</p>
+    <p>Si tu utilises un bloqueur, autorise ce site : touche <strong>aA</strong>
+       à gauche de la barre d'adresse, puis <em>Réglages du site web</em> ou
+       <em>Désactiver les bloqueurs de contenu</em>.</p>
+  </div>
+</noscript>
+
 <main id="scroll">
   <ul class="tasks" id="task-list"></ul>
   <p class="list-empty" id="list-empty" hidden>
