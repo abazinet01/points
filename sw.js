@@ -8,7 +8,7 @@
  * déclenche le remplacement de l'ancienne version sur l'iPhone.
  */
 
-const CACHE = 'points-v4';
+const CACHE = 'points-v5';
 
 const ASSETS = [
   './',
@@ -16,6 +16,9 @@ const ASSETS = [
   './app.css',
   './app.js',
   './manifest.webmanifest',
+  './icons/icon-32.png',
+  './icons/icon-152.png',
+  './icons/icon-167.png',
   './icons/icon-180.png',
   './icons/icon-192.png',
   './icons/icon-512.png',

@@ -12,7 +12,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Points">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <!-- iOS choisit selon l'appareil : mieux vaut déclarer chaque taille
+       explicitement que le laisser redimensionner une icône unique. Sans
+       correspondance exploitable au moment de l'ajout à l'écran d'accueil,
+       il fabrique un placeholder avec la première lettre du titre — et ne le
+       remplace plus ensuite. -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="./icons/icon-167.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="./icons/icon-152.png">
+  <link rel="apple-touch-icon-precomposed" href="./icons/icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-32.png">
 
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)">
