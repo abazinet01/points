@@ -135,6 +135,18 @@ l'ancienne version.
 - **Refaire les icônes** : n'importe quel PNG carré aux tailles indiquées dans
   le manifeste, plus `icons/icon-180.png` pour iOS.
 
+## Si l'app reste vide ou sans icône
+
+L'app est entièrement en JavaScript et ne dépend d'aucun serveur. Un
+**bloqueur de JavaScript ou de publicité** actif dans Safari suffit donc à
+la rendre inerte — et empêche aussi iOS de récupérer l'icône, qui retombe
+alors sur un placeholder à lettre sur fond gris.
+
+Dans Safari : toucher **aA** dans la barre d'adresse → *Désactiver les
+bloqueurs de contenu*, et vérifier Réglages → Safari → **Extensions**.
+Puis supprimer le raccourci et le réinstaller : iOS ne met jamais à jour
+l'icône d'un raccourci déjà posé.
+
 ## Crédits
 
 | | |
