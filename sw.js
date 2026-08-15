@@ -8,7 +8,7 @@
  * déclenche le remplacement de l'ancienne version sur l'iPhone.
  */
 
-const CACHE = 'points-v5';
+const CACHE = 'points-v6';
 
 const ASSETS = [
   './',
@@ -16,13 +16,13 @@ const ASSETS = [
   './app.css',
   './app.js',
   './manifest.webmanifest',
-  './icons/icon-32.png',
-  './icons/icon-152.png',
-  './icons/icon-167.png',
-  './icons/icon-180.png',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/icon-maskable-512.png',
+  './icons/v2/icon-32.png',
+  './icons/v2/icon-152.png',
+  './icons/v2/icon-167.png',
+  './icons/v2/icon-180.png',
+  './icons/v2/icon-192.png',
+  './icons/v2/icon-512.png',
+  './icons/v2/icon-maskable-512.png',
 ];
 
 self.addEventListener('install', e => {
@@ -45,6 +45,22 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   if (new URL(req.url).origin !== self.location.origin) return;
+
+  // Une page HTML servie depuis le cache masque toute mise à jour jusqu'au
+  // rafraîchissement suivant : les balises d'icônes, notamment, restaient
+  // celles de la version précédente. Le réseau d'abord, le cache en secours.
+  if (req.mode === 'navigate') {
+    e.respondWith(
+      fetch(req)
+        .then(res => {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(req, copy));
+          return res;
+        })
+        .catch(() => caches.match(req).then(hit => hit || caches.match('./index.html')))
+    );
+    return;
+  }
 
   e.respondWith(
     caches.match(req).then(hit => {
