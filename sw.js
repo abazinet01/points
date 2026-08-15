@@ -8,7 +8,7 @@
  * déclenche le remplacement de l'ancienne version sur l'iPhone.
  */
 
-const CACHE = 'points-v7';
+const CACHE = 'points-v8';
 
 const ASSETS = [
   './',
@@ -16,13 +16,13 @@ const ASSETS = [
   './app.css',
   './app.js',
   './manifest.webmanifest',
-  './icons/v2/icon-32.png',
-  './icons/v2/icon-152.png',
-  './icons/v2/icon-167.png',
-  './icons/v2/icon-180.png',
-  './icons/v2/icon-192.png',
-  './icons/v2/icon-512.png',
-  './icons/v2/icon-maskable-512.png',
+  '/points/icons/v2/icon-32.png',
+  '/points/icons/v2/icon-152.png',
+  '/points/icons/v2/icon-167.png',
+  '/points/icons/v2/icon-180.png',
+  '/points/icons/v2/icon-192.png',
+  '/points/icons/v2/icon-512.png',
+  '/points/icons/v2/icon-maskable-512.png',
 ];
 
 self.addEventListener('install', e => {

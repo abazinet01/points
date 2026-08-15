@@ -12,7 +12,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Points">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <!-- Le dossier d'icônes est versionné (icons/v2/) à dessein : iOS met les
+  <!-- Chemins ABSOLUS à dessein : Safari iOS échoue régulièrement à résoudre
+       un apple-touch-icon donné en relatif (./icons/…) alors que les autres
+       navigateurs y arrivent. Le prix à payer est que le site doit être servi
+       sous /points/ — c'est le cas sur GitHub Pages, et le serveur de
+       développement est configuré pareil.
+
+       Le dossier d'icônes est versionné (icons/v2/) à dessein : iOS met les
        icônes en cache par URL et ne les relit pas, même après suppression du
        raccourci. Pour changer l'icône, créer icons/v3/ plutôt que remplacer
        les fichiers en place.
@@ -22,11 +28,11 @@
        correspondance exploitable au moment de l'ajout à l'écran d'accueil,
        il fabrique un placeholder avec la première lettre du titre — et ne le
        remplace plus ensuite. -->
-  <link rel="apple-touch-icon" sizes="180x180" href="./icons/v2/icon-180.png">
-  <link rel="apple-touch-icon" sizes="167x167" href="./icons/v2/icon-167.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="./icons/v2/icon-152.png">
-  <link rel="apple-touch-icon-precomposed" href="./icons/v2/icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./icons/v2/icon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/points/icons/v2/icon-180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="/points/icons/v2/icon-167.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/points/icons/v2/icon-152.png">
+  <link rel="apple-touch-icon-precomposed" href="/points/icons/v2/icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/points/icons/v2/icon-32.png">
 
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)">
