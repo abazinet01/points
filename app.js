@@ -906,9 +906,28 @@ document.addEventListener('keydown', e => {
 });
 
 // Hors ligne : le service worker sert l'app depuis le cache.
+//
+// iOS ne va chercher une nouvelle version du service worker que de loin en
+// loin : une app installée pouvait rester bloquée sur d'anciens fichiers
+// pendant des jours. On force donc la vérification à chaque lancement, et on
+// recharge une fois — une seule — quand une nouvelle version prend la main,
+// pour que la page affichée corresponde aux fichiers réellement servis.
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {});
+  window.addEventListener('load', async () => {
+    try {
+      const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+      reg.update();
+
+      let rechargement = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (rechargement) return;      // garde-fou : jamais de boucle
+        rechargement = true;
+        location.reload();
+      });
+    } catch (e) {
+      // Pas de service worker (navigation privée, réglage désactivé) :
+      // l'app fonctionne, simplement sans mode hors ligne.
+    }
   });
 }
 

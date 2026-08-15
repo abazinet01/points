@@ -8,7 +8,7 @@
  * déclenche le remplacement de l'ancienne version sur l'iPhone.
  */
 
-const CACHE = 'points-v6';
+const CACHE = 'points-v7';
 
 const ASSETS = [
   './',
