@@ -28,8 +28,8 @@ chose de concret.
 
 ## Ce qui change par rapport au dotlist d'origine
 
-- **Esthétique papier** : monochrome façon encre électronique, texte en serif
-  (New York sur iOS), coins nets, aucune ombre, transitions instantanées. Sans
+- **Esthétique papier** : monochrome façon encre électronique, sans-serif
+  système, coins nets, aucune ombre, transitions instantanées. Sans
   couleur pour porter la hiérarchie, la tâche en cours de comparaison s'affiche
   en **inversion** — un bloc d'encre pleine. Menu → *Apparence* rebascule vers
   la palette orange d'origine ; les deux suivent le mode clair/sombre du

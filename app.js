@@ -598,7 +598,7 @@ function openThemeSheet() {
     <h3>Apparence</h3>
     <button class="sheet-btn" data-set-theme="paper">Papier${mark('paper')}</button>
     <button class="sheet-btn" data-set-theme="color">Couleur${mark('color')}</button>
-    <p class="hint">Papier : monochrome, encre électronique, texte en serif.
+    <p class="hint">Papier : monochrome, façon encre électronique.
        Les deux suivent le mode clair/sombre du téléphone.</p>
     <button class="sheet-btn cancel" data-close>Fermer</button>`, el => {
     el.querySelectorAll('[data-set-theme]').forEach(b => b.onclick = () => {
