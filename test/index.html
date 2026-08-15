@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test</title>
+
+<!-- Page de diagnostic, volontairement nue : une seule icône déclarée,
+     aucun manifeste, aucun service worker (sw.js ignore ce chemin).
+     But : déterminer si iOS sait récupérer une icône dans les conditions
+     les plus simples possibles. Le titre « Test » fait que le placeholder,
+     en cas d'échec, affiche un T — impossible à confondre avec le P de
+     l'app principale. -->
+<link rel="apple-touch-icon" href="/points/test/icone.png">
+
+<style>
+  body { font: 17px/1.5 -apple-system, sans-serif; margin: 0; padding: 1.5rem;
+         background: #f4f3ef; color: #1b1a17; }
+  h1 { font-size: 1.2rem; }
+  img { width: 120px; height: 120px; border: 1px solid #ccc; border-radius: 22px; }
+  #res { margin-top: 1rem; padding: 1rem; border-radius: 8px; background: #fff;
+         border: 1px solid #ddd; font-size: .9rem; }
+  .ok { color: #1a7f4b; font-weight: 600; }
+  .ko { color: #c0392b; font-weight: 600; }
+  ol { padding-left: 1.2rem; } li { margin: .5rem 0; }
+</style>
+</head>
+<body>
+
+<h1>Test d'icône</h1>
+
+<p>L'image ci-dessous est exactement le fichier qu'iOS doit utiliser :</p>
+<img id="im" src="/points/test/icone.png" alt="icône de test">
+
+<div id="res">vérification…</div>
+
+<h2 style="font-size:1rem">À faire</h2>
+<ol>
+  <li>Partager → <strong>Sur l'écran d'accueil</strong></li>
+  <li>Regarder l'icône obtenue sur l'écran d'accueil</li>
+  <li>Me dire : la liste pointée, ou un <strong>T</strong> gris ?</li>
+</ol>
+
+<script>
+// Diagnostic affiché sur l'appareil : c'est la seule façon de savoir ce que
+// voit réellement l'iPhone, plutôt que ce que voient mes outils.
+const im = document.getElementById('im'), res = document.getElementById('res');
+function dire(html) { res.innerHTML = html; }
+
+im.onload = async () => {
+  let entetes = '';
+  try {
+    const r = await fetch(im.src, { cache: 'reload' });
+    entetes = `HTTP ${r.status} · ${r.headers.get('content-type')}`;
+  } catch (e) { entetes = 'requête impossible'; }
+  dire(`<span class="ok">L'image se charge.</span><br>`
+     + `${im.naturalWidth}×${im.naturalHeight} px<br>${entetes}<br>`
+     + `<small>${im.src}</small>`);
+};
+im.onerror = () => dire(`<span class="ko">L'image NE se charge PAS.</span><br>`
+                      + `<small>${im.src}</small>`);
+</script>
+</body>
+</html>

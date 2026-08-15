@@ -8,7 +8,7 @@
  * déclenche le remplacement de l'ancienne version sur l'iPhone.
  */
 
-const CACHE = 'points-v8';
+const CACHE = 'points-v9';
 
 const ASSETS = [
   './',
@@ -45,6 +45,9 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   if (new URL(req.url).origin !== self.location.origin) return;
+  // La page de diagnostic doit répondre du réseau seul : mise en cache, elle
+  // ne dirait plus rien de l'état réel du serveur.
+  if (new URL(req.url).pathname.startsWith('/points/test/')) return;
 
   // Une page HTML servie depuis le cache masque toute mise à jour jusqu'au
   // rafraîchissement suivant : les balises d'icônes, notamment, restaient
