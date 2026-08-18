@@ -568,3 +568,30 @@ li.done .task-text { color: var(--muted); text-decoration: line-through; }
 }
 .noscript h2 { margin: 0 0 .5rem; font-size: 1.05rem; }
 .noscript p  { margin: .5rem 0; font-size: .95rem; color: var(--muted); }
+
+/* ---------- Grand écran (Mac) ----------
+   L'app est dessinée pour un pouce sur un écran de téléphone. Étirée sur un
+   moniteur, chaque ligne traverse l'écran et l'œil doit parcourir tout ce
+   vide entre le texte et sa coche. On la ramène donc à une colonne de
+   largeur lisible, posée sur un fond légèrement plus sourd.
+   Sous 720 px — donc sur iPhone — rien de tout ceci ne s'applique. */
+@media (min-width: 720px) {
+  html { background: var(--surface-2); }
+
+  body {
+    max-width: 620px;
+    margin: 0 auto;
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+  }
+
+  /* Au clavier et à la souris, les cibles n'ont plus besoin d'être aussi
+     hautes qu'au pouce. */
+  .btn { min-height: 46px; }
+  .task-text { min-height: 46px; }
+
+  /* Le survol existe ici : autant s'en servir. */
+  ul.tasks li:hover { background: var(--surface-2); }
+  li.candidate:hover { background: var(--cand-bg); }
+  .btn:hover { filter: brightness(.96); }
+}
