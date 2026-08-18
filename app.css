@@ -569,6 +569,21 @@ li.done .task-text { color: var(--muted); text-decoration: line-through; }
 .noscript h2 { margin: 0 0 .5rem; font-size: 1.05rem; }
 .noscript p  { margin: .5rem 0; font-size: .95rem; color: var(--muted); }
 
+/* ---------- Badges de touche ----------
+   Sans clavier, ils n'apprendraient rien à personne : masqués par défaut,
+   révélés seulement là où un clavier est plausible. */
+kbd {
+  display: none;
+  margin-left: .5em;
+  padding: .1em .45em;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font: inherit;
+  font-size: .72em;
+  opacity: .55;
+  vertical-align: middle;
+}
+
 /* ---------- Grand écran (Mac) ----------
    L'app est dessinée pour un pouce sur un écran de téléphone. Étirée sur un
    moniteur, chaque ligne traverse l'écran et l'œil doit parcourir tout ce
@@ -590,8 +605,21 @@ li.done .task-text { color: var(--muted); text-decoration: line-through; }
   .btn { min-height: 46px; }
   .task-text { min-height: 46px; }
 
+  kbd { display: inline-block; }
+
   /* Le survol existe ici : autant s'en servir. */
   ul.tasks li:hover { background: var(--surface-2); }
   li.candidate:hover { background: var(--cand-bg); }
   .btn:hover { filter: brightness(.96); }
+}
+
+/* Les raccourcis ne concernent que les appareils dotés d'un clavier. */
+.shortcuts { display: none; }
+@media (min-width: 720px) {
+  .shortcuts { display: block; }
+  .shortcuts dl { display: grid; grid-template-columns: auto 1fr;
+                  gap: .45rem 1rem; margin: .6rem 0; align-items: baseline; }
+  .shortcuts dt { text-align: right; }
+  .shortcuts dd { margin: 0; color: var(--muted); font-size: .95rem; }
+  .shortcuts kbd { display: inline-block; margin: 0; opacity: .8; }
 }

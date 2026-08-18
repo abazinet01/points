@@ -38,7 +38,7 @@
   <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
 
-  <link rel="stylesheet" href="./app.css?v=12">
+  <link rel="stylesheet" href="./app.css?v=13">
 </head>
 
 <body>
@@ -124,6 +124,18 @@
       <li>Quand la chaîne est vide, la tâche suivante devient le nouveau repère.
           Et ça recommence.</li>
     </ol>
+    <div class="shortcuts">
+      <h3 class="credit-head">Au clavier</h3>
+      <dl>
+        <dt><kbd>⏎</kbd></dt><dd>l'action principale du moment : lancer la revue,
+            répondre oui, marquer terminé</dd>
+        <dt><kbd>N</kbd></dt><dd>non, pendant la revue</dd>
+        <dt><kbd>C</kbd></dt><dd>commencé mais pas fini</dd>
+        <dt><kbd>A</kbd></dt><dd>aller au champ d'ajout</dd>
+        <dt><kbd>échap</kbd></dt><dd>fermer ce qui est ouvert, ou arrêter la revue</dd>
+      </dl>
+    </div>
+
     <h3 class="credit-head">D'où vient cette app</h3>
     <p class="credit">La méthode <em>Final Version</em> est de
        <strong>Mark Forster</strong> —
@@ -140,6 +152,6 @@
 
 <input type="file" id="import-file" accept="application/json,.json" hidden>
 
-<script src="./app.js?v=12"></script>
+<script src="./app.js?v=13"></script>
 </body>
 </html>

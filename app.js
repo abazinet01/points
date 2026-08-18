@@ -247,7 +247,7 @@ function renderPanel() {
     $panel.innerHTML = `
       <p class="label">Ton repère</p>
       <p class="question"><span class="subject"></span></p>
-      <div class="row"><button class="btn primary" id="start-review">Commencer la revue</button></div>`;
+      <div class="row"><button class="btn primary" id="start-review">Commencer la revue<kbd>⏎</kbd></button></div>`;
     $panel.querySelector('.subject').textContent = idx >= 0 ? state.tasks[idx].text : '';
     $('start-review').onclick = startReview;
     return;
@@ -264,10 +264,10 @@ function renderPanel() {
         <span class="versus">plus que <b class="bench"></b> ?</span>
       </p>
       <div class="row">
-        <button class="btn" id="review-no">Non</button>
-        <button class="btn primary" id="review-yes">Oui</button>
+        <button class="btn" id="review-no">Non<kbd>N</kbd></button>
+        <button class="btn primary" id="review-yes">Oui<kbd>⏎</kbd></button>
       </div>
-      <div class="row"><button class="btn ghost" id="end-review">Arrêter la revue et travailler</button></div>`;
+      <div class="row"><button class="btn ghost" id="end-review">Arrêter la revue et travailler<kbd>échap</kbd></button></div>`;
     $panel.querySelector('.candidate-text').textContent = cand.text;
     $panel.querySelector('.bench').textContent = state.tasks[bIdx].text;
     $('review-yes').onclick = reviewYes;
@@ -283,8 +283,8 @@ function renderPanel() {
       <p class="label">En cours</p>
       <p class="question"><span class="subject"></span></p>
       <div class="row">
-        <button class="btn" id="partial">Commencé</button>
-        <button class="btn primary" id="done">Terminé</button>
+        <button class="btn" id="partial">Commencé<kbd>C</kbd></button>
+        <button class="btn primary" id="done">Terminé<kbd>⏎</kbd></button>
       </div>
       <p class="hint-inline">« Commencé » raye la tâche et en remet une copie en bas de la liste.</p>`;
     $panel.querySelector('.subject').textContent = state.tasks[idx].text;
@@ -898,11 +898,63 @@ if (window.visualViewport) {
 }
 
 // Échap ferme ce qui est ouvert (utile sur ordinateur).
+/* ---- Raccourcis clavier ----
+ * Pensés pour l'usage au Mac, où une revue se mène bien plus vite qu'à la
+ * souris. Aucune condition de taille d'écran : sans clavier, rien ne peut
+ * les déclencher — et branché à un iPad ou un iPhone, ils fonctionnent.
+ *
+ *   Entrée  action principale du moment (revue, oui, terminé)
+ *   N       non, pendant la revue
+ *   C       commencé mais pas fini, pendant l'exécution
+ *   A ou /  aller au champ d'ajout
+ *   Échap   fermer ce qui est ouvert, sinon arrêter la revue
+ */
 document.addEventListener('keydown', e => {
-  if (e.key !== 'Escape') return;
-  if (!$sheet.hidden) { closeSheet(); return; }
-  const page = [...document.querySelectorAll('.page')].find(p => !p.hidden);
-  if (page) closePage(page);
+  // Ne jamais détourner une frappe destinée à un champ de saisie.
+  const cible = e.target;
+  const saisie = cible && (cible.tagName === 'INPUT' || cible.tagName === 'TEXTAREA'
+                           || cible.isContentEditable);
+
+  if (e.key === 'Escape') {
+    if (saisie) { cible.blur(); return; }
+    if (!$sheet.hidden) { closeSheet(); return; }
+    const page = [...document.querySelectorAll('.page')].find(p => !p.hidden);
+    if (page) { closePage(page); return; }
+    if (state.mode === 'reviewing') finishReview();
+    return;
+  }
+
+  if (saisie) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  // Une feuille ou une page ouverte capte l'attention : pas de raccourci de
+  // liste derrière elle.
+  if (!$sheet.hidden) return;
+  if ([...document.querySelectorAll('.page')].some(p => !p.hidden)) return;
+
+  const k = e.key.toLowerCase();
+
+  // Aller au champ d'ajout, quel que soit le mode où il est visible.
+  if ((k === 'a' || k === '/') && !$composer.hidden) {
+    e.preventDefault();
+    $input.focus();
+    return;
+  }
+
+  if (state.mode === 'idle') {
+    if (k === 'enter' || e.key === 'Enter' || k === 'r') { e.preventDefault(); startReview(); }
+    return;
+  }
+
+  if (state.mode === 'reviewing') {
+    if (e.key === 'Enter' || k === 'o' || k === 'y') { e.preventDefault(); reviewYes(); }
+    else if (k === 'n') { e.preventDefault(); reviewNo(); }
+    return;
+  }
+
+  if (state.mode === 'executing') {
+    if (e.key === 'Enter' || k === 't') { e.preventDefault(); completeCurrent(false); }
+    else if (k === 'c' || k === 'p') { e.preventDefault(); completeCurrent(true); }
+  }
 });
 
 // Hors ligne : le service worker sert l'app depuis le cache.
